@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /images/original/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /data/
+
+Sitemap: https://studiomox.ru/sitemap.xml
+
+Host: studiomox.ru

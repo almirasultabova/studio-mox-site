@@ -1,0 +1,189 @@
+.fv-image {
+  min-height: 500px;
+}
+
+.fv-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.first-visit-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.first-visit-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 16px;
+  border: 1px solid rgba(61, 53, 48, 0.16);
+  color: var(--taupe);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.first-visit-links a:hover {
+  border-color: var(--sage);
+  color: var(--sage-dark);
+  transform: translateY(-1px);
+}
+
+.procedure-story {
+  display: block;
+  padding: clamp(64px, 8vw, 112px) 6vw;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(196, 168, 130, 0.15), transparent 32%),
+    var(--milk);
+}
+
+.procedure-video {
+  position: relative;
+  overflow: hidden;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  border-radius: 32px;
+  background: #1d332b;
+  box-shadow: 0 34px 90px rgba(31, 50, 42, 0.2);
+}
+
+.procedure-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #1d332b;
+  object-fit: cover;
+}
+
+.trust-num--text {
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.1;
+}
+
+.services-secondary { background: var(--light); }
+.services-grid--core,
+.services-grid--secondary { align-items: stretch; }
+.services-grid--secondary .service-card {
+  padding: 26px 28px;
+}
+
+.services-grid--secondary .service-desc {
+  margin-bottom: 16px;
+}
+
+.extras-card--course {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(280px, 1.4fr) auto;
+  grid-template-areas:
+    "label description price"
+    "title description actions";
+  gap: 8px 36px;
+  align-items: center;
+}
+
+.extras-card--course .extras-label {
+  grid-area: label;
+  justify-self: start;
+  margin: 0;
+}
+
+.extras-card--course .extras-title {
+  grid-area: title;
+  margin: 0;
+}
+
+.extras-card--course .extras-desc {
+  grid-area: description;
+  margin: 0;
+}
+
+.extras-card--course .extras-meta {
+  grid-area: price;
+  justify-self: end;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.extras-card--course .service-actions {
+  grid-area: actions;
+  justify-content: flex-end;
+  margin: 0;
+}
+.contacts-cta-note { margin-top: 6px; color: rgba(250,247,242,0.82); font-size: 12px; line-height: 1.5; }
+
+@media (max-width: 900px) {
+  .extras-card--course {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "label price"
+      "title title"
+      "description description"
+      "actions actions";
+    gap: 10px 24px;
+  }
+
+  .extras-card--course .service-actions {
+    justify-content: flex-start;
+  }
+
+  .procedure-story {
+    padding: 58px 20px 68px;
+  }
+
+  .fv-image {
+    min-height: 300px;
+  }
+
+  .procedure-video {
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 520px) {
+  .services-grid .service-actions {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .services-grid .service-btn-more {
+    padding-inline: 14px;
+  }
+  .services-grid--secondary .service-card {
+    padding: 20px 22px;
+  }
+
+  .extras-card--course {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "label"
+      "title"
+      "description"
+      "price"
+      "actions";
+    gap: 10px;
+    padding: 24px 22px;
+  }
+
+  .extras-card--course .extras-meta {
+    justify-self: start;
+  }
+
+  .first-visit-links {
+    display: grid;
+  }
+
+  .first-visit-links a {
+    justify-content: center;
+    text-align: center;
+  }
+}
