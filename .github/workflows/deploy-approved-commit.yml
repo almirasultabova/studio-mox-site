@@ -130,11 +130,29 @@ jobs:
             exit 1
           fi
 
-          if grep -R -n -E --include='*.html' \
-            '(−50%|-50%|−30%|-30%|Подружка)' .; then
-            echo "A retired first-visit promotion was found."
-            exit 1
-          fi
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          retired_terms = ('−50%', '-50%', '−30%', '-30%', 'Подружка')
+          findings = []
+          for path in Path('.').rglob('*.html'):
+              raw = path.read_text(encoding='utf-8')
+              without_css = re.sub(
+                  r'<style\b[^>]*>.*?</style>',
+                  '',
+                  raw,
+                  flags=re.IGNORECASE | re.DOTALL,
+              )
+              for term in retired_terms:
+                  if term in without_css:
+                      findings.append(f'{path}: {term}')
+
+          if findings:
+              raise SystemExit(
+                  'Retired first-visit promotion found:\n' + '\n'.join(findings)
+              )
+          PY
 
           grep -q 'Студия депиляции МОХ' index.html
           grep -q 'ГЛАДКОСТЬ. КОМФОРТ. УВЕРЕННОСТЬ.' index.html
