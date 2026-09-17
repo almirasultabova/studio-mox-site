@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Check out the exact approved commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.commit_sha }}
           fetch-depth: 0
@@ -154,12 +154,21 @@ jobs:
               )
           PY
 
-          grep -q 'Студия депиляции МОХ' index.html
-          grep -q 'ГЛАДКОСТЬ. КОМФОРТ. УВЕРЕННОСТЬ.' index.html
-          grep -q 'https://dikidi.ru/#widget=213049' index.html
-          grep -q 'tel:+79262458999' index.html
-          grep -q 'https://vk.ru/mox_pushkino' index.html
-          grep -q 'https://max.ru/join/XUaVZ5nAhNeaqM1vpxHjrUxd1azmEjL3-AgCfs2Gb9o' index.html
+          require_homepage_text() {
+            local expected="$1"
+            if ! grep -Fq "$expected" index.html; then
+              echo "Required homepage text or link is missing: $expected"
+              exit 1
+            fi
+          }
+
+          require_homepage_text 'Студия депиляции МОХ'
+          require_homepage_text 'ГЛАДКОСТЬ. КОМФОРТ.'
+          require_homepage_text 'УВЕРЕННОСТЬ.'
+          require_homepage_text 'https://dikidi.ru/#widget=213049'
+          require_homepage_text 'tel:+79262458999'
+          require_homepage_text 'https://vk.ru/mox_pushkino'
+          require_homepage_text 'https://max.ru/join/XUaVZ5nAhNeaqM1vpxHjrUxd1azmEjL3-AgCfs2Gb9o'
 
       - name: Prepare public artifact
         shell: bash
@@ -173,10 +182,10 @@ jobs:
             ./ _site/
 
       - name: Set up GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload approved artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
