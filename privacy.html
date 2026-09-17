@@ -9,15 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site-tokens.css?v=20260729a">
   <style>
     :root {
-      --milk: var(--color-bg);
-      --sage: var(--color-accent);
-      --sage-dark: var(--color-accent-hover);
-      --taupe: var(--color-text);
-      --taupe2: var(--color-text-muted);
-      --light: var(--color-surface);
+      --milk: #FAF7F2;
+      --sage: #6DB05A;
+      --sage-dark: #3D7A28;
+      --taupe: #3D3530;
+      --taupe2: #5C524B;
+      --light: #F3F0E8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -25,7 +24,7 @@
       background: var(--milk);
       color: var(--taupe2);
       line-height: 1.7;
-      font-size: var(--text-base);
+      font-size: 15px;
     }
     .legal-nav {
       padding: 20px 48px;
@@ -88,15 +87,8 @@
       padding-bottom: 20px;
       border-bottom: 1px solid rgba(61,53,48,0.12);
     }
-    .cookie-table { width: 100%; border-collapse: collapse; margin: 20px 0 16px; font-size: 13px; }
-    .cookie-table th, .cookie-table td { padding: 10px 8px; border-bottom: 1px solid rgba(61,53,48,0.12); text-align: left; vertical-align: top; }
-    .cookie-table th { color: var(--taupe); font-weight: 500; }
-    @media (max-width: 600px) {
-      .cookie-table { display: block; overflow-x: auto; white-space: normal; }
-      .cookie-table th, .cookie-table td { min-width: 150px; }
-    }
     footer {
-      background: var(--color-text);
+      background: #2a2320;
       padding: 24px 48px;
       color: rgba(250,247,242,0.4);
       font-size: 11px;
@@ -140,7 +132,7 @@
     <li>Номер телефона;</li>
     <li>Адрес электронной почты (при наличии);</li>
     <li>Информация об оказанных услугах и предпочтениях клиента;</li>
-    <li>Технические данные: IP-адрес, данные браузера, cookies и действия на сайте. Яндекс.Метрика получает эти данные только после отдельного согласия на аналитику.</li>
+    <li>Технические данные: IP-адрес, cookies, данные браузера, действия на сайте (через сервисы веб-аналитики — Яндекс.Метрика).</li>
   </ul>
 
   <h2>4. Цели обработки</h2>
@@ -160,7 +152,7 @@
   <ul>
     <li>сервиса онлайн-записи DIKIDI (dikidi.net) — для ведения записи;</li>
     <li>сервисов коммуникации (ВК, Max, Telegram) — при обращении клиента через них;</li>
-    <li>Яндекс.Метрика — технические данные и события посещения после согласия на аналитику; в работе студии используются агрегированные отчёты;</li>
+    <li>сервисов веб-аналитики (Яндекс.Метрика) — в обезличенном виде;</li>
     <li>случаев, предусмотренных законодательством РФ.</li>
   </ul>
 
@@ -175,16 +167,7 @@
   <p>Для реализации своих прав направьте запрос по телефону +7 (926) 245-89-99 или обратитесь лично в студию.</p>
 
   <h2>8. Cookies</h2>
-  <p>Сайт использует cookies и похожие технологии хранения данных в браузере. Необходимые данные нужны для работы сайта и сохранения выбора пользователя. Аналитические cookies Яндекс.Метрики включаются только после нажатия «Принять» в баннере cookies. Отказ от аналитики не мешает пользоваться сайтом.</p>
-  <table class="cookie-table">
-    <thead><tr><th>Категория</th><th>Кто устанавливает</th><th>Цель</th><th>Срок</th></tr></thead>
-    <tbody>
-      <tr><td>Настройки cookies</td><td>studiomox.ru</td><td>Сохранить выбор «Принять» или «Только необходимые»</td><td>До изменения выбора или удаления данных браузера</td></tr>
-      <tr><td>Аналитические cookies</td><td>Яндекс.Метрика</td><td>Собирать статистику посещений и действий на сайте</td><td>По правилам и срокам, установленным Яндексом</td></tr>
-      <tr><td>Сессионная метка кампании</td><td>studiomox.ru</td><td>Связать переход с QR-кампанией ТЦ «Круиз»</td><td>До 30 минут в текущей вкладке</td></tr>
-    </tbody>
-  </table>
-  <p>Согласие можно изменить по ссылке «Настройки cookies» внизу страницы. При переходе к онлайн-записи данные передаются в DIKIDI, который обрабатывает их как отдельный оператор по своим документам и правилам.</p>
+  <p>Сайт использует cookies — небольшие текстовые файлы, которые сохраняются в вашем браузере. Cookies помогают нам улучшать работу сайта и анализировать посещаемость. Необходимые cookies используются для работы сайта. Яндекс.Метрика загружается только после вашего согласия; выбор можно изменить по ссылке «Настройки cookies» внизу страницы.</p>
 
   <h2>9. Безопасность</h2>
   <p>Оператор принимает необходимые организационные и технические меры для защиты персональных данных от несанкционированного доступа, изменения, раскрытия или уничтожения.</p>

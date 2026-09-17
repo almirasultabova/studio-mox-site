@@ -2,36 +2,6 @@
   var COUNTER_ID = 108746024;
   var GENERIC_GOAL = "dikidi_widget_open";
   var LEGACY_GENERIC_GOAL = "dikidi_widget_click";
-  var CRUISE_SESSION_KEY = "mox_kruiz_b01_visit";
-  var CRUISE_SESSION_TTL_MS = 30 * 60 * 1000;
-
-  function isCruiseB01Visit() {
-    var campaign = new URLSearchParams(window.location.search).get("utm_campaign");
-    var now = Date.now();
-
-    try {
-      if (campaign === "b01") {
-        window.sessionStorage.setItem(CRUISE_SESSION_KEY, String(now));
-        return true;
-      }
-
-      if (campaign) {
-        window.sessionStorage.removeItem(CRUISE_SESSION_KEY);
-        return false;
-      }
-
-      var startedAt = Number(window.sessionStorage.getItem(CRUISE_SESSION_KEY));
-      if (startedAt && now - startedAt <= CRUISE_SESSION_TTL_MS) return true;
-
-      window.sessionStorage.removeItem(CRUISE_SESSION_KEY);
-    } catch (error) {
-      return campaign === "b01";
-    }
-
-    return false;
-  }
-
-  var IS_CRUISE_B01_VISIT = isCruiseB01Visit();
   var WIDGET_GOALS = {
     "213049": "dikidi_company",
     "213051": "dikidi_anastasia",
@@ -93,17 +63,11 @@
       page_path: window.location.pathname,
       page_title: document.title,
       service_slug: (window.location.pathname.match(/\/services\/([^/.]+)/) || [])[1] || "",
-      placement: link.closest(".sticky-cta") ? "sticky" : link.closest(".srv-mobile-cta") ? "service_sticky" : link.closest(".guide-mobile-cta") ? "guide_sticky" : link.closest(".hero-actions") ? "hero" : link.closest(".nav-cta") ? "nav" : link.closest(".master-card") ? "master" : link.closest(".service-card") ? "service_card" : link.closest(".first-visit-links") ? "first_visit" : link.closest(".contacts-cta") ? "final" : link.closest(".srv-cta") ? "service_bottom" : link.closest(".srv-hero") ? "service_hero" : link.closest(".guide-actions") ? "guide" : "page"
+      placement: link.closest(".sticky-cta") ? "sticky" : link.closest(".master-card") ? "master" : link.closest(".service-card") ? "service_card" : link.closest(".srv-cta") ? "service_bottom" : link.closest(".srv-hero") ? "service_hero" : "page"
     };
 
     sendGoal(GENERIC_GOAL, params);
     sendGoal(LEGACY_GENERIC_GOAL, params);
-
-    // Separate attribution event for the Cruise shopping-center QR campaign.
-    // It is emitted only when the current visit carries the b01 campaign tag.
-    if (IS_CRUISE_B01_VISIT) {
-      sendGoal("kruiz_b01_dikidi_open", params);
-    }
 
     if (WIDGET_GOALS[widgetId]) {
       sendGoal(WIDGET_GOALS[widgetId], params);

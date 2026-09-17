@@ -1,15 +1,3 @@
-.fv-image {
-  min-height: 500px;
-}
-
-.fv-image img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .first-visit-links {
   display: flex;
   flex-wrap: wrap;
@@ -39,18 +27,53 @@
 }
 
 .procedure-story {
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(28px, 5vw, 76px);
+  align-items: center;
   padding: clamp(64px, 8vw, 112px) 6vw;
   background:
     radial-gradient(circle at 12% 18%, rgba(196, 168, 130, 0.15), transparent 32%),
     var(--milk);
 }
 
+.procedure-story-copy {
+  max-width: 510px;
+}
+
+.procedure-story-copy .section-sub {
+  max-width: 470px;
+}
+
+.procedure-story-facts {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.procedure-story-facts span {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(61, 53, 48, 0.12);
+  color: var(--taupe2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.procedure-story-facts strong {
+  min-width: 80px;
+  color: var(--sage-dark);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .procedure-video {
   position: relative;
   overflow: hidden;
-  width: min(1180px, 100%);
-  margin: 0 auto;
   border-radius: 32px;
   background: #1d332b;
   box-shadow: 0 34px 90px rgba(31, 50, 42, 0.2);
@@ -64,83 +87,31 @@
   object-fit: cover;
 }
 
-.trust-num--text {
-  font-size: clamp(22px, 2.6vw, 34px);
-  line-height: 1.1;
+.procedure-video-note {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+  padding: 7px 10px;
+  border: 1px solid rgba(250, 247, 242, 0.46);
+  border-radius: 999px;
+  background: rgba(25, 48, 39, 0.76);
+  color: var(--milk);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
 }
-
-.services-secondary { background: var(--light); }
-.services-grid--core,
-.services-grid--secondary { align-items: stretch; }
-.services-grid--secondary .service-card {
-  padding: 26px 28px;
-}
-
-.services-grid--secondary .service-desc {
-  margin-bottom: 16px;
-}
-
-.extras-card--course {
-  display: grid;
-  grid-template-columns: minmax(190px, 0.7fr) minmax(280px, 1.4fr) auto;
-  grid-template-areas:
-    "label description price"
-    "title description actions";
-  gap: 8px 36px;
-  align-items: center;
-}
-
-.extras-card--course .extras-label {
-  grid-area: label;
-  justify-self: start;
-  margin: 0;
-}
-
-.extras-card--course .extras-title {
-  grid-area: title;
-  margin: 0;
-}
-
-.extras-card--course .extras-desc {
-  grid-area: description;
-  margin: 0;
-}
-
-.extras-card--course .extras-meta {
-  grid-area: price;
-  justify-self: end;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.extras-card--course .service-actions {
-  grid-area: actions;
-  justify-content: flex-end;
-  margin: 0;
-}
-.contacts-cta-note { margin-top: 6px; color: rgba(250,247,242,0.82); font-size: 12px; line-height: 1.5; }
 
 @media (max-width: 900px) {
-  .extras-card--course {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "label price"
-      "title title"
-      "description description"
-      "actions actions";
-    gap: 10px 24px;
-  }
-
-  .extras-card--course .service-actions {
-    justify-content: flex-start;
-  }
-
   .procedure-story {
+    grid-template-columns: 1fr;
     padding: 58px 20px 68px;
   }
 
-  .fv-image {
-    min-height: 300px;
+  .procedure-story-copy {
+    max-width: none;
   }
 
   .procedure-video {
@@ -149,35 +120,6 @@
 }
 
 @media (max-width: 520px) {
-  .services-grid .service-actions {
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .services-grid .service-btn-more {
-    padding-inline: 14px;
-  }
-  .services-grid--secondary .service-card {
-    padding: 20px 22px;
-  }
-
-  .extras-card--course {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "label"
-      "title"
-      "description"
-      "price"
-      "actions";
-    gap: 10px;
-    padding: 24px 22px;
-  }
-
-  .extras-card--course .extras-meta {
-    justify-self: start;
-  }
-
   .first-visit-links {
     display: grid;
   }
@@ -185,5 +127,11 @@
   .first-visit-links a {
     justify-content: center;
     text-align: center;
+  }
+
+  .procedure-story-facts span {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
   }
 }

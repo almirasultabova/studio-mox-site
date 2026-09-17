@@ -1,12 +1,12 @@
 :root {
-  --milk: var(--color-bg);
-  --sage: var(--color-accent);
-  --sage-dark: var(--color-accent-hover);
-  --sage-light: var(--color-accent-soft);
-  --taupe: var(--color-text);
-  --taupe2: var(--color-text-muted);
-  --light: var(--color-surface);
-  --gold: var(--color-warm-soft);
+  --milk: #FAF7F2;
+  --sage: #6DB05A;
+  --sage-dark: #3D7A28;
+  --sage-light: #BFDCB0;
+  --taupe: #3D3530;
+  --taupe2: #5C524B;
+  --light: #F3F0E8;
+  --gold: #E8C99A;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
