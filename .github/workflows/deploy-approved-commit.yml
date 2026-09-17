@@ -1,0 +1,167 @@
+name: Deploy approved commit to Pages
+
+run-name: Deploy ${{ inputs.commit_sha }} to production
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Full 40-character commit SHA approved for production
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  validate-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the exact approved commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify immutable release input
+        env:
+          REQUESTED_COMMIT: ${{ inputs.commit_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$REQUESTED_COMMIT" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            echo "Production deploy requires a full 40-character commit SHA."
+            exit 1
+          fi
+
+          ACTUAL_COMMIT="$(git rev-parse HEAD)"
+          if [[ "${ACTUAL_COMMIT,,}" != "${REQUESTED_COMMIT,,}" ]]; then
+            echo "Checked out ${ACTUAL_COMMIT}, expected ${REQUESTED_COMMIT}."
+            exit 1
+          fi
+
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$ACTUAL_COMMIT" origin/main; then
+            echo "The requested commit is not part of the public main branch."
+            exit 1
+          fi
+
+      - name: Validate public-only site
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            .nojekyll
+            CNAME
+            404.html
+            index.html
+            first-visit.html
+            wax-or-sugar.html
+            guide.css
+            homepage-enhancements.css
+            privacy.html
+            consent.html
+            offer.html
+            robots.txt
+            sitemap.xml
+            site-consent.js
+            dikidi-goals.js
+            services/service.css
+            services/gallery.js
+            services/women.html
+            services/men.html
+            services/complexes.html
+            services/brows.html
+            services/carbon.html
+            services/tattoo.html
+            services/course.html
+            images/hero2.jpg
+            images/hero-mobile.jpeg
+            images/mox-procedure-poster.webp
+            images/mox-procedure.mp4
+            images/illustrations/men-waxing.webp
+            images/illustrations/complexes-multi-zone.webp
+          )
+
+          for file in "${required_files[@]}"; do
+            if [[ ! -s "$file" ]]; then
+              echo "Required public file is missing or empty: $file"
+              exit 1
+            fi
+          done
+
+          if [[ "$(tr -d '\r\n' < CNAME)" != "studiomox.ru" ]]; then
+            echo "CNAME must contain only studiomox.ru."
+            exit 1
+          fi
+
+          forbidden_dirs=(admin data deploy docs nastya-business-support tools tests)
+          for dir in "${forbidden_dirs[@]}"; do
+            if [[ -e "$dir" ]]; then
+              echo "Forbidden private or operational path found: $dir"
+              exit 1
+            fi
+          done
+
+          if find . -path './.git' -prune -o -type l -print -quit | grep -q .; then
+            echo "Symbolic links are not allowed in the public site artifact."
+            exit 1
+          fi
+
+          if find . -path './.git' -prune -o -type f \
+            \( -iname '*.env' -o -iname '*.pem' -o -iname '*.key' \
+               -o -iname '*.sqlite' -o -iname '*.sqlite3' -o -iname '*.db' \
+               -o -iname '*.xlsx' -o -iname '*.xls' -o -iname '*.csv' \) \
+            -print -quit | grep -q .; then
+            echo "A potentially private data or credential file was found."
+            exit 1
+          fi
+
+          if grep -R -n -E --include='*.html' \
+            '(−50%|-50%|−30%|-30%|Подружка)' .; then
+            echo "A retired first-visit promotion was found."
+            exit 1
+          fi
+
+          grep -q 'Студия депиляции МОХ' index.html
+          grep -q 'ГЛАДКОСТЬ. КОМФОРТ. УВЕРЕННОСТЬ.' index.html
+          grep -q 'https://dikidi.ru/#widget=213049' index.html
+          grep -q 'tel:+79262458999' index.html
+          grep -q 'https://vk.ru/mox_pushkino' index.html
+          grep -q 'https://max.ru/join/XUaVZ5nAhNeaqM1vpxHjrUxd1azmEjL3-AgCfs2Gb9o' index.html
+
+      - name: Prepare public artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir _site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='_site' \
+            ./ _site/
+
+      - name: Set up GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload approved artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy approved artifact
+        id: deployment
+        uses: actions/deploy-pages@v5
